@@ -1,6 +1,6 @@
 {
-	"interface": ":{{ couchbase_sync_gateway_port }}",
-	"adminInterface": "127.0.0.1:4985",
+	"interface": "127.0.0.1:{{ couchbase_sync_gateway_port }}",
+	"adminInterface": "127.0.0.1:{{ couchbase_sync_gateway_admin_port }}",
 	"log": ["REST"],
 	"databases": {
 		"{{ couchbase_server_bucket_name }}": {

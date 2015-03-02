@@ -1,0 +1,23 @@
+
+upstream sync_gateway {
+    server 127.0.0.1:{{ couchbase_sync_gateway_port }};
+}
+
+# HTTP server
+#
+server {
+    listen {{ couchbase_sync_gateway_nginx_port }};
+    server_name {{ couchbase_sync_gateway_nginx_server }};
+    client_max_body_size 21m;
+    location / {
+        proxy_pass              http://sync_gateway;
+        proxy_pass_header       Accept;
+        proxy_pass_header       Server;
+        proxy_http_version      1.1;
+        proxy_set_header        Upgrade $http_upgrade;
+        proxy_set_header        Connection "upgrade";
+        keepalive_requests      1000;
+        keepalive_timeout       360s;
+        proxy_read_timeout      360s;
+    }
+}

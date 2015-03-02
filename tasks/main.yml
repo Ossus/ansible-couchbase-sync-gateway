@@ -8,11 +8,11 @@
 
 # Install on CentOS/RHEL
 - include: RedHat.yml tags=installation
-  when: ansible_os_family  == "RedHat"
+  when: ansible_os_family == "RedHat"
 
 # Install on Debian/Ubuntu
 - include: Debian.yml tags=installation
-  when: ansible_os_family  == "Debian"
+  when: ansible_os_family == "Debian"
 
 - name: Cleanup
   file: name=/tmp/{{ couchbase_sync_gateway_package }} state=absent
@@ -23,6 +23,24 @@
   user: name={{ couchbase_sync_gateway_user.name }} comment="Couchbase Sync Gateway" group=admin state=present home={{ couchbase_sync_gateway_user.home }}
   tags:
     - installation
+
+- name: Copy Nginx Settings
+  template: src=sync_gateway.nginx.j2 dest=/etc/nginx/sites-available/sync_gateway
+  tags:
+    - installation
+    - configuration
+
+- name: Apply Nginx Settings
+  file: src=/etc/nginx/sites-available/sync_gateway dest=/etc/nginx/sites-enabled/sync_gateway state=link
+  tags:
+    - installation
+    - configuration
+
+- name: Restart Nginx
+  service: name=nginx state=restarted
+  tags:
+    - installation
+    - configuration
 
 - name: Copy Sync Gateway Settings
   template: src=couchbase-sync-gateway.json.j2 dest={{ couchbase_sync_gateway_user.home }}/couchbase-sync-gateway.json owner={{ couchbase_sync_gateway_user.name }} mode="u=rw,g=,o="

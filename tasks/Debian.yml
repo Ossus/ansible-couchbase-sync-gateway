@@ -1,5 +1,9 @@
 ---
 
+- name: Install Nginx (Debian)
+  apt: name=nginx
+  tags: installation
+
 - name: Install Sync Gateway (Debian)
   apt: deb=/tmp/{{ couchbase_sync_gateway_package }}
   tags: installation

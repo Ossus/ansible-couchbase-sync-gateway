@@ -9,6 +9,7 @@ Configuration
 -------------
 
 The default settings install version 1.0.3 and configure sync gateway to talk to a local [Couchbase Server][couchbase-server] installation on the default ports against a `sync_gateway` bucket.
+_Nginx_ will be installed to reverse-proxy requests to sync gateway.
 The special **GUEST** user will be enabled on the _public_ channel.
 You can change these settings by redefining any of the following variables:
 
@@ -20,12 +21,18 @@ You can change these settings by redefining any of the following variables:
       name: cbsync
       home: /home/cbsync
     couchbase_sync_gateway_port: 4984
+    couchbase_sync_gateway_admin_port: 4985
     couchbase_sync_gateway_settings: couchbase-sync-gateway.json
     couchbase_sync_gateway_users:
       - name: GUEST
         admin_channels:
           - public
     
+    # Nginx
+    couchbase_sync_gateway_nginx_server: localhost
+    couchbase_sync_gateway_nginx_port: 4999
+    
+    # Server
     couchbase_server_bucket_name: sync_gateway
     couchbase_server_admin_port: 8091
 
