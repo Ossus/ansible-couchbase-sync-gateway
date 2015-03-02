@@ -1,0 +1,34 @@
+{
+	"interface": ":{{ couchbase_sync_gateway_port }}",
+	"adminInterface": "127.0.0.1:4985",
+	"log": ["REST"],
+	"databases": {
+		"{{ couchbase_server_bucket_name }}": {
+			"server": "http://localhost:{{ couchbase_server_admin_port }}",
+			"bucket": "{{ couchbase_server_bucket_name }}",
+			{% if couchbase_sync_gateway_users -%}
+			"users": {
+				{% for user in couchbase_sync_gateway_users -%}
+				"{{ user.name }}": {
+					"disabled": false
+					{%- if user.admin_channels is defined %},
+					"admin_channels": [
+						{% for channel in user.admin_channels -%}
+						"{{ channel }}"{% if not loop.last %},{% endif %}
+
+						{% endfor -%}
+					]{% endif %}
+
+				}{% if not loop.last %},{% endif %}
+
+				{% endfor -%}
+			},{% endif %}
+
+			"sync": `
+
+{% include "couchbase-sync-gateway.js" %}
+
+			`
+		}
+	}
+}

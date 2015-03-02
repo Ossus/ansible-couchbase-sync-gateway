@@ -1,0 +1,9 @@
+---
+
+- name: SELinux Python Module
+  yum: name=libselinux-python state=present
+  tags: installation
+
+- name: Install Sync Gateway (RedHat)
+  yum: name=/tmp/{{ couchbase_sync_gateway_package }} state=present
+  tags: installation

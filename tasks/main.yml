@@ -1,0 +1,37 @@
+---
+# Install Couchbase Sync Gateway with apt
+
+- name: Download
+  get_url: url={{ couchbase_sync_gateway_url }} dest=/tmp/{{ couchbase_sync_gateway_package }} sha256sum={{ couchbase_sync_gateway_sha256 }} timeout=30
+  tags:
+    - installation
+
+# Install on CentOS/RHEL
+- include: RedHat.yml tags=installation
+  when: ansible_os_family  == "RedHat"
+
+# Install on Debian/Ubuntu
+- include: Debian.yml tags=installation
+  when: ansible_os_family  == "Debian"
+
+- name: Cleanup
+  file: name=/tmp/{{ couchbase_sync_gateway_package }} state=absent
+  tags:
+    - installation
+
+- name: Create Sync Gateway User
+  user: name={{ couchbase_sync_gateway_user.name }} comment="Couchbase Sync Gateway" group=admin state=present home={{ couchbase_sync_gateway_user.home }}
+  tags:
+    - installation
+
+- name: Copy Sync Gateway Settings
+  template: src=couchbase-sync-gateway.json.j2 dest={{ couchbase_sync_gateway_user.home }}/couchbase-sync-gateway.json owner={{ couchbase_sync_gateway_user.name }} mode="u=rw,g=,o="
+  tags:
+    - installation
+    - configuration
+
+- name: Copy Run Script
+  template: src=run_gateway.sh.j2 dest={{ couchbase_sync_gateway_user.home }}/run_gateway.sh owner={{ couchbase_sync_gateway_user.name }} mode="u+x"
+  tags:
+    - installation
+    - configuration
