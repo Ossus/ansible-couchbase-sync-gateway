@@ -1,17 +1,27 @@
 ---
 # Install Couchbase Sync Gateway with apt
+# NOTE: It's not currently possible to download sync gateway (1.2) without user
+# interaction. Hence, use a copy file task if `couchbase_sync_gateway_url` is
+# not defined
 
 - name: Download
   get_url: url={{ couchbase_sync_gateway_url }} dest=/tmp/{{ couchbase_sync_gateway_package }} sha256sum={{ couchbase_sync_gateway_sha256 }} timeout=30
+  when: couchbase_sync_gateway_url
+  tags:
+    - installation
+
+- name: Copy
+  copy: src={{ couchbase_sync_gateway_package}} dest=/tmp/{{ couchbase_sync_gateway_package }}
+  when: not couchbase_sync_gateway_url
   tags:
     - installation
 
 # Install on CentOS/RHEL
-- include: RedHat.yml tags=installation
+- include: RedHat.yml
   when: ansible_os_family == "RedHat"
 
 # Install on Debian/Ubuntu
-- include: Debian.yml tags=installation
+- include: Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Cleanup
