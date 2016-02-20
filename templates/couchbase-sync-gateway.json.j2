@@ -3,9 +3,9 @@
 	"adminInterface": "localhost:{{ couchbase_sync_gateway_admin_port }}",
 	"log": ["REST"],
 	"databases": {
-		"{{ couchbase_server_bucket_name }}": {
+		"{{ couchbase_sync_gateway_db_name }}": {
 			"server": "{{ couchbase_server_url }}:{{ couchbase_server_admin_port }}",
-			"bucket": "default",
+			"bucket": "{{ couchbase_server_bucket_name }}",
 			{% if couchbase_sync_gateway_users -%}
 			"users": {
 				{% for user in couchbase_sync_gateway_users -%}

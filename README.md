@@ -18,7 +18,6 @@ You can change these settings by redefining any of the following variables:
     couchbase_sync_gateway_package: couchbase-sync-gateway-community_1.2.0-79_x86_64.deb
     couchbase_sync_gateway_port: 4984
     couchbase_sync_gateway_admin_port: 4985
-    couchbase_sync_gateway_settings: couchbase-sync-gateway.json
     couchbase_sync_gateway_users:
       - name: GUEST
         admin_channels:
