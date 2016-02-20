@@ -1,6 +1,5 @@
 #!/bin/sh
 
 /opt/couchbase-sync-gateway/bin/sync_gateway \
-	-url http://localhost:{{ couchbase_server_admin_port }} \
-	-bucket {{ couchbase_server_bucket_name }} \
+	-url {{ couchbase_server_url }}:{{ couchbase_server_admin_port }} \
 	couchbase-sync-gateway.json

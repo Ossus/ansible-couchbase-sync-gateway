@@ -29,10 +29,11 @@
   tags:
     - installation
 
-- name: Create Sync Gateway User
-  user: name={{ couchbase_sync_gateway_user.name }} comment="Couchbase Sync Gateway" group=admin state=present home={{ couchbase_sync_gateway_user.home }}
-  tags:
-    - installation
+# this appears no longer necessary with Sync Gateway 1.2
+# - name: Create Sync Gateway User
+#   user: name={{ couchbase_sync_gateway_user.name }} comment="Couchbase Sync Gateway" group=admin state=present home={{ couchbase_sync_gateway_user.home }}
+#   tags:
+#     - installation
 
 - name: Copy Nginx Settings
   template: src=sync_gateway.nginx.j2 dest=/etc/nginx/sites-available/sync_gateway
@@ -53,7 +54,7 @@
     - configuration
 
 - name: Copy Sync Gateway Settings
-  template: src=couchbase-sync-gateway.json.j2 dest={{ couchbase_sync_gateway_user.home }}/couchbase-sync-gateway.json owner={{ couchbase_sync_gateway_user.name }} mode="u=rw,g=,o="
+  template: src=couchbase-sync-gateway.json.j2 dest={{ couchbase_sync_gateway_user.home }}/sync_gateway.json owner={{ couchbase_sync_gateway_user.name }} mode="u=rw,g=,o="
   tags:
     - installation
     - configuration
