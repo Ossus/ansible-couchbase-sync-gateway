@@ -4,10 +4,6 @@ Couchbase Sync Gateway Ansible Role
 This is a role to install [Couchbase Sync Gateway][sync-gateway] with [Ansible][] scripts.
 You can combine it with Couchbase's [server install scripts][ansible-server] found on GitHub.
 
-> NOTE: It's not currently possible to download sync gateway (1.2) without user
-> interaction. Hence, we use a copy file task, copying the _DEB_ file from the
-> root directory to the VM.
-
 
 Configuration
 -------------
@@ -40,7 +36,7 @@ You can change these settings by redefining any of the following variables:
     couchbase_server_admin_port: 8091
 
 The file `couchbase-sync-gateway.json.j2` is the configuration file the gateway will use when starting, you can provide your own if you so desire.
-Furthermore, the file `couchbase-sync-gateway.js` contains the sync function, you can supply your own to specify your sync function.
+Furthermore, the file `couchbase-sync-gateway.js` contains the sync function, supply your own to specify your sync function.
 
 
 Running
